@@ -7,20 +7,12 @@ public class MyRegex {
                   true:  a*, a*c, *c, *, abc*, ab+, abc+
     */
     public static boolean isMatch(String s, String regex) {
-        if (!isaValidInput(s, regex)){
-            return false;
-        }
-
-        if (s.isEmpty() && regex.isEmpty()) {
-            return true;
-        }
-
-        if (regex.isEmpty()) {
+        if (!isaValidInput(s, regex) || (regex.isEmpty() && !s.isEmpty())){
             return false;
         }
 
         if (s.isEmpty()) {
-            return isRegOnlyWildcards(regex);
+            return regex.isEmpty() || isRegOnlyWildcards(regex);
         }
 
         if (regex.charAt(0) == '+') {
