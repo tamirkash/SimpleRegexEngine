@@ -36,50 +36,53 @@ public class MyRegex {
             //remove any + or * following this *
             regex = removeExtraWildcards(regex);
 
-            if (regex.length() == 1) {
-                return true;
-            }
-
-            for (int i = 0; i < s.length(); i++) {
-                if (regex.charAt(1) == s.charAt(i)) {
-                    if(isMatch(s.substring(i + 1), regex.substring(2))){
-                        return true;
-                    }
-                }
-            }
-
-            return false;
+            return isMatchAfterAsterisk(s, regex);
         }
 
         return s.charAt(0) == regex.charAt(0) && isMatch(s.substring(1), regex.substring(1));
     }
 
-    private static String removeExtraWildcards(String regex) {
+    private static boolean isMatchAfterAsterisk(String s, String regex) {
         if (regex.length() == 1) {
-            return regex;
+            return true;
         }
 
-        if (regex.charAt(0) == '*') {
-            int i = 1;
-
-            while (i < regex.length() && isCharWildcard(regex.charAt(i))) {
-                i++;
+        for (int i = 0; i < s.length(); i++) {
+            if (regex.charAt(1) == s.charAt(i)) {
+                if(isMatch(s.substring(i + 1), regex.substring(2))){
+                    return true;
+                }
             }
-
-            return i < regex.length() ? regex.substring(0, 1) + regex.substring(i) : regex.substring(0, 1);
-        } else {
-            int i = 1;
-
-            while (i < regex.length() && regex.charAt(i) == '+') {
-                i++;
-            }
-
-            if (i < regex.length() && regex.charAt(i) == '*') {
-                return regex.substring(i);
-            }
-
-            return regex;
         }
+
+        return false;
+    }
+
+    private static String removeExtraWildcards(String regex) {
+        return regex.charAt(0) == '*' ? removeExtraWildcardsAfterAsterisk(regex) :
+                removeExtraWildcardsBeforeAsterisk(regex);
+    }
+
+    //e.g **+++*+_ => *_
+    private static String removeExtraWildcardsAfterAsterisk(String regex) {
+        int i = 1;
+
+        while (i < regex.length() && isCharWildcard(regex.charAt(i))) {
+            i++;
+        }
+
+        return i < regex.length() ? regex.substring(0, 1) + regex.substring(i) : regex.substring(0, 1);
+    }
+
+    //e.g +++*_ => *_
+    private static String removeExtraWildcardsBeforeAsterisk(String regex) {
+        int i = 1;
+
+        while (i < regex.length() && regex.charAt(i) == '+') {
+            i++;
+        }
+
+        return i < regex.length() && regex.charAt(i) == '*' ? regex.substring(i) : regex;
     }
 
     private static boolean isMatchWithOrWithoutFirstChar(String s, String regex) {
