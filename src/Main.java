@@ -6,7 +6,10 @@ public class Main {
         assertTrue(MyRegex.isMatch("abc", "*"));
         assertTrue(MyRegex.isMatch("abc", "*****"));
         assertTrue(MyRegex.isMatch("abc", "***+**+"));
+        assertTrue(MyRegex.isMatch("abc", "+***+**+"));
         assertTrue(MyRegex.isMatch("", "*"));
+        assertTrue(MyRegex.isMatch("", "+"));
+        assertTrue(MyRegex.isMatch("", "++++"));
         assertTrue(MyRegex.isMatch("a", "a"));
         assertTrue(MyRegex.isMatch("abc", "*c"));
         assertTrue(MyRegex.isMatch("abc", "++c"));
@@ -25,6 +28,7 @@ public class Main {
         assertTrue(MyRegex.isMatch("a", "*a*"));
         assertTrue(MyRegex.isMatch("aa", "*a"));
         assertTrue(MyRegex.isMatch("aa", "a*"));
+        assertTrue(MyRegex.isMatch("abcdbc", "ab++bc"));
         assertTrue(MyRegex.isMatch("abcabcabc", "*c"));
         assertTrue(MyRegex.isMatch("abcabcabc", "a++c*ab++"));
         assertTrue(MyRegex.isMatch("blablabla", "*ab*l++a++a"));
@@ -34,6 +38,7 @@ public class Main {
         assertTrue(MyRegex.isMatch("aa", "+++"));
         assertTrue(MyRegex.isMatch("ab", "+++"));
 
+        assertFalse(MyRegex.isMatch("abcdbc", "ab+bc"));
         assertFalse(MyRegex.isMatch("aaa", "+a"));
         assertFalse(MyRegex.isMatch("abcabcabc", "abc+++++"));
         assertFalse(MyRegex.isMatch("", "a"));
